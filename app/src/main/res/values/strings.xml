@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Status Saver</string>
+    <string name="menu_img">Images</string>
+    <string name="menu_vid">Videos</string>
+    <string name="menu_downloads">Downloads</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

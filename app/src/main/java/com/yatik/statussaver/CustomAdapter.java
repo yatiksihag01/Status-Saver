@@ -12,26 +12,20 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder>{
 
-    private ArrayList<ImageData> imageData;
+    private final ArrayList<ImageData> imageData;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView leftImageView;
-        private final ImageView rightImageView;
+        private final ImageView imageView;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
 
-            leftImageView = view.findViewById(R.id.imageView);
-            rightImageView = view.findViewById(R.id.imageView2);
+            imageView = view.findViewById(R.id.imageView);
         }
 
-        public ImageView getLeftImageView() {
-            return leftImageView;
-        }
-
-        public ImageView getRightImageView(){
-            return rightImageView;
+        public ImageView getImageView() {
+            return imageView;
         }
     }
 
@@ -49,8 +43,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.ViewHolder holder, int position) {
-        holder.getLeftImageView().setImageResource(imageData.get(position).getLeftImageId());
-        holder.getRightImageView().setImageResource(imageData.get(position).getRightImageId());
+        holder.getImageView().setImageResource(imageData.get(position).getImageId());
     }
 
     @Override

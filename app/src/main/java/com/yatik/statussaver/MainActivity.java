@@ -1,10 +1,10 @@
 package com.yatik.statussaver;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 
@@ -21,11 +21,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         imageData = new ArrayList<>();
 
-        imageData.add(new ImageData(R.drawable.family_mother, R.drawable.family_older_sister));
-        imageData.add(new ImageData(R.drawable.family_older_sister, R.drawable.family_younger_sister));
-        imageData.add(new ImageData(R.drawable.family_son, R.drawable.family_younger_sister));
+        imageData.add(new ImageData(R.drawable.family_mother));
+        imageData.add(new ImageData(R.drawable.family_older_sister));
+        imageData.add(new ImageData(R.drawable.family_son));
 
         CustomAdapter adapter = new CustomAdapter(imageData);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
     }
 }
