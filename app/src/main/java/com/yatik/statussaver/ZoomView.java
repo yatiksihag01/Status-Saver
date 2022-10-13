@@ -24,6 +24,7 @@ public class ZoomView extends AppCompatActivity {
     ActivityImageDetailsBinding binding;
     String filePath;
     String sentFrom;
+    String match = "downloadsAdapter";
     Uri fileUri;
 
     @Override
@@ -41,7 +42,7 @@ public class ZoomView extends AppCompatActivity {
 
         filePath = getIntent().getStringExtra("filePath");
         sentFrom = getIntent().getStringExtra("sentFrom");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Objects.equals(sentFrom, "downloadsAdapter")){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Objects.equals(sentFrom, match)){
             fileUri = Uri.parse(filePath);
 
         } else{
@@ -71,7 +72,7 @@ public class ZoomView extends AppCompatActivity {
 
 
         binding.shareButton.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)){
 
                 File file = new File(filePath);
                 Uri shareUri = FileProvider.getUriForFile(getApplicationContext(), "com.yatik.statussaver.fileprovider", file);
@@ -97,7 +98,7 @@ public class ZoomView extends AppCompatActivity {
             intent.setPackage(CommonClass.WA_PACKAGE_NAME);
             intent.setType(mimeType);
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)) {
 
                 File file = new File(filePath);
                 Uri shareUri = FileProvider.getUriForFile(getApplicationContext(), "com.yatik.statussaver.fileprovider", file);
@@ -125,7 +126,7 @@ public class ZoomView extends AppCompatActivity {
                         try{
                             launchIntent.setPackage("com.google.android.apps.photos");
                             launchIntent.setType(mimeType);
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)) {
 
                                 File file = new File(filePath);
                                 Uri shareUri = FileProvider.getUriForFile(getApplicationContext(), "com.yatik.statussaver.fileprovider", file);
@@ -149,10 +150,10 @@ public class ZoomView extends AppCompatActivity {
         });
 
         binding.saveButton.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-                CommonClass.saveFileAboveQ(this, filePath);
-            } else {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)){
                 CommonClass.saveFileBelowQ(this, filePath);
+            } else {
+                CommonClass.saveFileAboveQ(this, filePath);
             }
         });
 
