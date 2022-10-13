@@ -3,6 +3,15 @@
     <string name="menu_img">Images</string>
     <string name="menu_vid">Videos</string>
     <string name="menu_downloads">Downloads</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="settings">Settings</string>
+    <string name="share">Share</string>
+    <string name="save">Save</string>
+    <string name="edit">Edit</string>
+    <string name="grant_permission">GRANT PERMISSION</string>
+    <string name="noPermissionAlert">App needs media permission to work properly. Please click Setting -> Permissions -> Files and media -> Allow access to media only</string>
+    <string name="folderAccessMessage">To get all statuses, please click on GRANT PERMISSION and then click on USE THIS FOLDER button</string>
+    <string name="noFiles">Open WhatsApp, watch statuses, come back here and refresh</string>
+    <string name="BackupMessage">Are you sure that you want to backup this file to Google Photos?</string>
+    <string name="ChooseApp">Choose App</string>
+    <string name="Other">Other</string>
 </resources>

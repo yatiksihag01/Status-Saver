@@ -9,11 +9,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.Settings;
@@ -23,10 +23,10 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
     Handler handler = new Handler();
     List<Object> statusList = new ArrayList<>();
+    boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +56,7 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        ActionBar actionBar = getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.colorPrimary));
-        assert actionBar != null;
-        actionBar.setBackgroundDrawable(colorDrawable);
+        binding.topAppBar.setNavigationOnClickListener(v -> binding.drawerLayout.openDrawer(GravityCompat.START));
 
         mPermissionResultLauncher =
                 registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
@@ -73,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
 
                     if (!isReadPermissionGranted && !isWritePermissionGranted){
                         showNoPermissionAlert();
+                    }
+
+                    if (isReadPermissionGranted && isWritePermissionGranted){
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+                            replaceFragment(new ImageFragment(statusList));
+                        }
                     }
                 });
 
@@ -93,10 +97,6 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-            replaceFragment(new ImageFragment(statusList));
-        }
     }
 
 
@@ -120,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
         }
         if (!permissionRequest.isEmpty()){
             mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+                replaceFragment(new ImageFragment(statusList));
         }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
@@ -237,6 +239,20 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
     }
 
 }

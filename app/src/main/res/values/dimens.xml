@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="refreshLayoutMargin">4dp</dimen>
+    <dimen name="zoomViewIconHeightWidth">57dp</dimen>
+</resources>

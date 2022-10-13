@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#202A30</color>
+    <color name="backgroundDark">#191C1E</color>
+    <color name="FileDetailsButtonBackground">#FF000000</color>
 </resources>

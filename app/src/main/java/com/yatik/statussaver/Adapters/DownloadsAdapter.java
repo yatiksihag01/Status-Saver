@@ -2,9 +2,6 @@ package com.yatik.statussaver.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +13,8 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.yatik.statussaver.ZoomView;
 import com.yatik.statussaver.Others.Data;
-import com.yatik.statussaver.ImageDetails;
 import com.yatik.statussaver.R;
 
 import java.util.List;
@@ -25,13 +22,10 @@ import java.util.List;
 public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.ViewHolder>{
 
     private final List<Data> filesList;
-    private final List<Object> statusList;
     private Context context;
 
-    public DownloadsAdapter(List<Data> filesData, List<Object> statusList){
+    public DownloadsAdapter(List<Data> filesData){
         this.filesList = filesData;
-        this.statusList =  statusList;
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,48 +57,26 @@ public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.View
         //TODO: add error image here
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(circularProgressDrawable);
+        Data singleFileData = filesList.get(position);
+        Glide
+                .with(context)
+                .load(singleFileData.getFileUri())
+                .centerCrop()
+                .apply(requestOptions)
+                .into(holder.imageView);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-            Data singleFileData = filesList.get(position);
-            Glide
-                    .with(context)
-                    .load(singleFileData.getFileUri())
-                    .centerCrop()
-                    .apply(requestOptions)
-                    .into(holder.imageView);
+        holder.imageView.setOnClickListener(v -> {
+            String filePath = singleFileData.getPath();
+            Intent intent = new Intent(context, ZoomView.class);
+            intent.putExtra("filePath", filePath);
+            intent.putExtra("sentFrom", "downloadsAdapter");
+            context.startActivity(intent);
+        });
 
-            holder.imageView.setOnClickListener(v -> {
-                String filePath = singleFileData.getPath();
-                Intent intent = new Intent(context, ImageDetails.class);
-                intent.putExtra("filePath", filePath);
-                context.startActivity(intent);
-            });
-
-        } else{
-            Uri uriToLoad = Uri.parse(String.valueOf(statusList.get(position)));
-
-            Log.v("uriToLoad", String.valueOf(statusList.get(position)));
-            Glide
-                    .with(context)
-                    .load(uriToLoad)
-                    .centerCrop()
-                    .apply(requestOptions)
-                    .into(holder.imageView);
-
-            holder.imageView.setOnClickListener(v -> {
-                String filePath = String.valueOf(statusList.get(position));
-                Intent intent = new Intent(context, ImageDetails.class);
-                intent.putExtra("filePath", filePath);
-                context.startActivity(intent);
-            });
-        }
     }
 
     @Override
     public int getItemCount() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-            return statusList.size();
-        }
         return filesList.size();
     }
 }

@@ -4,57 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ImageDetails">
+    android:background="@color/FileDetailsButtonBackground"
+    tools:context=".ZoomView">
 
 
     <ImageView
         android:id="@+id/main_img_container"
-        android:layout_width="408dp"
-        android:layout_height="616dp"
-        app:layout_constraintBottom_toTopOf="@id/floating_action_save_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.4"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_save_button"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/videoFrame"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_baseline_save_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/elevatedButton"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="150dp"
-        android:layout_height="58dp"
-        android:layout_marginTop="8dp"
-        android:text="Elevated button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/floating_action_save_button"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toEndOf="@+id/floating_action_share_button"
-        app:layout_constraintTop_toBottomOf="@+id/main_img_container"
-        app:layout_constraintVertical_bias="0.831" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_share_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_baseline_save_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/main_img_container"
-        app:layout_constraintVertical_bias="0.829" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/FileDetailsButtonBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/save_button"
+            android:layout_width="@dimen/zoomViewIconHeightWidth"
+            android:layout_height="@dimen/zoomViewIconHeightWidth"
+            android:background="@color/FileDetailsButtonBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.864"
+            app:layout_constraintStart_toEndOf="@+id/edit_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/outline_file_download_24" />
+
+        <ImageButton
+            android:id="@+id/share_button"
+            android:layout_width="@dimen/zoomViewIconHeightWidth"
+            android:layout_height="@dimen/zoomViewIconHeightWidth"
+            android:background="@color/FileDetailsButtonBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/forward_button"
+            app:layout_constraintHorizontal_bias="0.066"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_share_24" />
+
+        <ImageButton
+            android:id="@+id/edit_button"
+            android:layout_width="@dimen/zoomViewIconHeightWidth"
+            android:layout_height="@dimen/zoomViewIconHeightWidth"
+            android:background="@color/FileDetailsButtonBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toEndOf="@+id/forward_button"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_baseline_backup_24" />
+
+        <ImageButton
+            android:id="@+id/forward_button"
+            android:layout_width="@dimen/zoomViewIconHeightWidth"
+            android:layout_height="@dimen/zoomViewIconHeightWidth"
+            android:background="@color/FileDetailsButtonBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.311"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/forward_icon_24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
