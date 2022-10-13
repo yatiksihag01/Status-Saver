@@ -1,5 +1,6 @@
 package com.yatik.statussaver.Adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.View
         return new ViewHolder(view);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(@NonNull DownloadsAdapter.ViewHolder holder, int position) {
 
