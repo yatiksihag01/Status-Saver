@@ -23,7 +23,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="File thumbnail in list"
+            tools:ignore="HardcodedText" />
 
         <ImageView
             android:id="@+id/play_icon"

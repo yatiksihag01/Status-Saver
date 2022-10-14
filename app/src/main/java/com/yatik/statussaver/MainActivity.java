@@ -17,6 +17,7 @@ import android.os.Looper;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.provider.Settings;
+import android.text.Html;
 import android.view.View;
 import android.widget.Toast;
 
@@ -138,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
                         .setMessage(R.string.folderAccessMessage)
                         .setCancelable(false)
                         .setIcon(R.drawable.permission_message)
-                        .setPositiveButton(R.string.grant_permission, (dialog, which) -> aboveQPermission());
+                        .setPositiveButton(Html.fromHtml("<font color='#89B3F7'>GRANT PERMISSION</font>"), (dialog, which) -> aboveQPermission());
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 .setMessage(R.string.noPermissionAlert)
                 .setCancelable(false)
                 .setIcon(R.drawable.permission_message)
-                .setPositiveButton(R.string.settings, (dialog, which) -> {
+                .setPositiveButton(Html.fromHtml("<font color='#89B3F7'>SETTINGS</font>"), (dialog, which) -> {
                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                     Uri uri = Uri.fromParts("package", getPackageName(), null);
                     intent.setData(uri);
