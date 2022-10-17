@@ -70,7 +70,6 @@ public class ZoomView extends AppCompatActivity {
             binding.videoView.requestFocus();
         }
 
-
         binding.shareButton.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)){
 
@@ -102,7 +101,7 @@ public class ZoomView extends AppCompatActivity {
 
                 File file = new File(filePath);
                 Uri shareUri = FileProvider.getUriForFile(getApplicationContext(), "com.yatik.statussaver.fileprovider", file);
-                intent.setData(shareUri);
+                intent.putExtra(Intent.EXTRA_STREAM ,shareUri);
 
             } else {
                 intent.putExtra(Intent.EXTRA_STREAM, fileUri);
