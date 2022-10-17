@@ -36,10 +36,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView thumbnailView;
+        private final ImageView videoPlayIcon;
         public ViewHolder(View view) {
             super(view);
 
             thumbnailView = view.findViewById(R.id.fileView);
+            videoPlayIcon = view.findViewById(R.id.play_icon);
 
         }
     }
@@ -63,6 +65,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
         //TODO: add error image here
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(circularProgressDrawable);
+        holder.videoPlayIcon.setVisibility(View.VISIBLE);
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
             Data videoData = videoList.get(position);
             Glide

@@ -31,10 +31,12 @@ public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.View
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageView imageView;
+        private final ImageView videoPlayIcon;
         public ViewHolder(View view) {
             super(view);
 
             imageView = view.findViewById(R.id.fileView);
+            videoPlayIcon = view.findViewById(R.id.play_icon);
 
         }
     }
@@ -60,6 +62,10 @@ public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.View
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(circularProgressDrawable);
         Data singleFileData = filesList.get(position);
+
+        if (singleFileData.getName().endsWith(".mp4")){
+            holder.videoPlayIcon.setVisibility(View.VISIBLE);
+        }
         Glide
                 .with(context)
                 .load(singleFileData.getFileUri())
