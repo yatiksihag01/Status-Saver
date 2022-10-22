@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,31 +15,19 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.yatik.statussaver.ZoomView;
 import com.yatik.statussaver.Others.Data;
 import com.yatik.statussaver.R;
+import com.yatik.statussaver.ZoomView;
 
 import java.util.List;
 
-public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.ViewHolder>{
+public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.ViewHolder> {
 
     private final List<Data> filesList;
     private Context context;
 
-    public DownloadsAdapter(List<Data> filesData){
+    public DownloadsAdapter(List<Data> filesData) {
         this.filesList = filesData;
-    }
-
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView imageView;
-        private final ImageView videoPlayIcon;
-        public ViewHolder(View view) {
-            super(view);
-
-            imageView = view.findViewById(R.id.fileView);
-            videoPlayIcon = view.findViewById(R.id.play_icon);
-
-        }
     }
 
     @NonNull
@@ -63,7 +52,7 @@ public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.View
         requestOptions.placeholder(circularProgressDrawable);
         Data singleFileData = filesList.get(position);
 
-        if (singleFileData.getName().endsWith(".mp4")){
+        if (singleFileData.getName().endsWith(".mp4")) {
             holder.videoPlayIcon.setVisibility(View.VISIBLE);
         }
         Glide
@@ -81,10 +70,29 @@ public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.View
             context.startActivity(intent);
         });
 
+
+        holder.imageView.setOnLongClickListener(v -> {
+            Toast.makeText(context, "Coming soon...", Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return filesList.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final ImageView imageView;
+        private final ImageView videoPlayIcon;
+
+        public ViewHolder(View view) {
+            super(view);
+
+            imageView = view.findViewById(R.id.fileView);
+            videoPlayIcon = view.findViewById(R.id.play_icon);
+
+        }
     }
 }

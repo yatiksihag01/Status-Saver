@@ -23,13 +23,13 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/top_app_bar"
-                app:title="@string/app_name"
-                app:titleTextColor="@color/white"
-                app:titleCentered="true"
-                app:navigationIcon="@drawable/ic_baseline_menu_24"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"/>
+                android:background="@color/colorPrimary"
+                app:navigationIcon="@drawable/ic_baseline_menu_24"
+                app:title="@string/app_name"
+                app:titleCentered="true"
+                app:titleTextColor="@color/white" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -41,19 +41,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/app_bar_layout"/>
+            app:layout_constraintTop_toBottomOf="@id/app_bar_layout" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottomNavigationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/main_frame_layout"
+            android:background="?attr/colorPrimaryVariant"
+            app:itemTextColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:background="?attr/colorPrimaryVariant"
-            app:itemTextColor="@color/white"
-            app:menu="@menu/bottom_menu"/>
+            app:layout_constraintTop_toBottomOf="@id/main_frame_layout"
+            app:menu="@menu/bottom_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -63,7 +63,8 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorPrimary"
+        app:headerLayout="@layout/nav_drawer_header"
         app:itemTextColor="@color/white"
-        app:menu="@menu/navigation_drawer"/>
+        app:menu="@menu/navigation_drawer" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

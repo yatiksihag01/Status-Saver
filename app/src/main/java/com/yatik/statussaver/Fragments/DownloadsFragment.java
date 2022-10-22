@@ -31,14 +31,14 @@ import java.util.List;
  */
 public class DownloadsFragment extends Fragment {
 
+    private final Handler handler = new Handler();
+    private final List<Data> filesList = new ArrayList<>();
     TextView noFilesText;
+    SwipeRefreshLayout swipeRefreshLayout;
     private DownloadsAdapter downloadsAdapter;
     private RecyclerView downloadsRecycler;
-    private final Handler handler = new Handler();
-    SwipeRefreshLayout swipeRefreshLayout;
-    private final List<Data> filesList = new ArrayList<>();
 
-    public DownloadsFragment(){
+    public DownloadsFragment() {
         //Required empty constructor
     }
 
@@ -68,18 +68,18 @@ public class DownloadsFragment extends Fragment {
 
 
     @SuppressLint("NotifyDataSetChanged")
-    private void extractFiles(){
+    private void extractFiles() {
         new Thread(() -> {
             // a potentially time consuming task
-            if (!CommonClass.SAVED_FOLDER_FILE.exists()){
+            if (!CommonClass.SAVED_FOLDER_FILE.exists()) {
                 CommonClass.SAVED_FOLDER_FILE.mkdir();
             }
             File[] allFiles = CommonClass.SAVED_FOLDER_FILE.listFiles();
             assert allFiles != null;
             Arrays.sort(allFiles, (o1, o2) -> {
-                if (o1.lastModified() > o2.lastModified()){
+                if (o1.lastModified() > o2.lastModified()) {
                     return -1;
-                } else if (o2.lastModified() > o1.lastModified()){
+                } else if (o2.lastModified() > o1.lastModified()) {
                     return 1;
                 }
                 return 0;
@@ -92,7 +92,6 @@ public class DownloadsFragment extends Fragment {
                     filesList.add(filesData);
                 }
                 handler.post(() -> {
-                    // TODO: instantiate new imageAdapter objet and pass imageList and any other required stuff
                     downloadsAdapter = new DownloadsAdapter(filesList);
                     downloadsRecycler.setAdapter(downloadsAdapter);
                     downloadsAdapter.notifyDataSetChanged();

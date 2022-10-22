@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="@string/menu_img"
-        android:icon="@drawable/ic_baseline_image_24"
-        android:id="@+id/images"/>
-    <item android:title="@string/menu_vid"
-        android:icon="@drawable/ic_baseline_movie_24"
-        android:id="@+id/videos"/>
     <item
-        android:title="@string/menu_downloads"
+        android:id="@+id/images"
+        android:icon="@drawable/ic_baseline_image_24"
+        android:title="@string/menu_img" />
+    <item
+        android:id="@+id/videos"
+        android:icon="@drawable/ic_baseline_movie_24"
+        android:title="@string/menu_vid" />
+    <item
+        android:id="@+id/downloads"
         android:icon="@drawable/outline_file_download_24"
-        android:id="@+id/downloads"/>
+        android:title="@string/menu_downloads" />
 </menu>

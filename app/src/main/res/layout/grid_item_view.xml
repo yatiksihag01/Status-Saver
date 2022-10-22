@@ -3,29 +3,29 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/grid_item_view"
-    app:cardBackgroundColor="@color/material_on_background_disabled"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
     android:layout_margin="18dp"
+    android:layout_weight="1"
+    app:cardBackgroundColor="@color/material_on_background_disabled"
     app:cardCornerRadius="10dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/fileView"
             android:layout_width="150dp"
             android:layout_height="125dp"
 
+            android:contentDescription="File thumbnail in list"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars"
-            android:contentDescription="File thumbnail in list"
-            tools:ignore="HardcodedText" />
+            tools:ignore="HardcodedText"
+            tools:srcCompat="@tools:sample/avatars" />
 
         <ImageView
             android:id="@+id/play_icon"
@@ -39,7 +39,6 @@
             app:layout_constraintTop_toTopOf="@+id/fileView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </androidx.cardview.widget.CardView>

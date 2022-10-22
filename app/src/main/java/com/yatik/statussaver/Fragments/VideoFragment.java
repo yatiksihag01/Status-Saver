@@ -38,16 +38,16 @@ import java.util.List;
  */
 public class VideoFragment extends Fragment {
 
+    private final List<Data> videoList = new ArrayList<>();
+    private final List<Object> videoStatusList = new ArrayList<>();
+    private final Handler handler = new Handler();
     View noFilesFound;
+    SwipeRefreshLayout swipeRefreshLayout;
     private VideoAdapter videoAdapter;
     private RecyclerView videoRecyclerView;
-    SwipeRefreshLayout swipeRefreshLayout;
     private List<Object> statusList;
-    private final List<Data> videoList = new ArrayList<>();
-    private final  List<Object> videoStatusList = new ArrayList<>();
-    private final Handler handler = new Handler();
 
-    public VideoFragment(){
+    public VideoFragment() {
         //Required empty constructor
     }
 
@@ -72,7 +72,7 @@ public class VideoFragment extends Fragment {
 
         swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 new Thread(() -> {
                     getListAboveQ(CommonClass.wa_status_uri);
                     handler.post(this::getVideoData);
@@ -93,9 +93,9 @@ public class VideoFragment extends Fragment {
 
 
     private void getVideoData() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && CommonClass.FOLDER_BELOW_Q.exists()){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && CommonClass.folderBelowQ.exists()) {
             extractVideosBelowQ();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && CommonClass.FOLDER_ABOVE_Q.exists()){
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && CommonClass.folderAboveQ.exists()) {
             extractVideosAboveQ();
         } else {
             Toast.makeText(getContext(), "WhatsApp Is Not Installed On Your Device", Toast.LENGTH_LONG).show();
@@ -110,12 +110,12 @@ public class VideoFragment extends Fragment {
         videoStatusList.clear();
         new Thread(() -> {
             // a potentially time consuming task
-            if (statusList.size() > 0){
-                for (int i = 0; i < statusList.size(); i++){
+            if (statusList.size() > 0) {
+                for (int i = 0; i < statusList.size(); i++) {
                     String docId = DocumentsContract.getDocumentId(Uri.parse(String.valueOf(statusList.get(i))));
                     File file = new File(docId);
                     new Data(file, file.getName(), file.getAbsolutePath());
-                    if (Data.isVideo){
+                    if (Data.isVideo) {
                         videoStatusList.add(statusList.get(i));
                     }
                 }
@@ -148,10 +148,10 @@ public class VideoFragment extends Fragment {
 
 
     @SuppressLint("NotifyDataSetChanged")
-    private void extractVideosBelowQ(){
+    private void extractVideosBelowQ() {
         new Thread(() -> {
             // a potentially time consuming task
-            File[] allFiles = CommonClass.FOLDER_BELOW_Q.listFiles();
+            File[] allFiles = CommonClass.folderBelowQ.listFiles();
             assert allFiles != null;
             Arrays.sort(allFiles, (o1, o2) -> {
                 if (o1.lastModified() > o2.lastModified()) {
@@ -221,19 +221,20 @@ public class VideoFragment extends Fragment {
     }
 
 
-    public void noFilesView(){
+    public void noFilesView() {
         noFilesFound.setVisibility(View.VISIBLE);
 
         Button openWA = noFilesFound.findViewById(R.id.no_files_button);
         openWA.setOnClickListener(v -> {
 
             Intent launchIntent = null;
-            try{
-                launchIntent = requireActivity().getPackageManager().getLaunchIntentForPackage(CommonClass.WA_PACKAGE_NAME);
-            } catch (Exception ignored) {}
+            try {
+                launchIntent = requireActivity().getPackageManager().getLaunchIntentForPackage(CommonClass.waPackageName);
+            } catch (Exception ignored) {
+            }
 
-            if(launchIntent == null){
-                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://play.google.com/store/apps/details?id=" + CommonClass.WA_PACKAGE_NAME)));
+            if (launchIntent == null) {
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://play.google.com/store/apps/details?id=" + CommonClass.waPackageName)));
             } else {
                 startActivity(launchIntent);
             }

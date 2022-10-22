@@ -41,14 +41,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityResultLauncher<String[]> mPermissionResultLauncher;
-    private boolean isReadPermissionGranted = false;
-    private boolean isWritePermissionGranted = false;
     private final int REQUEST_CODE = 1;
+    ActivityResultLauncher<String[]> mPermissionResultLauncher;
     SharedPreferences sharedPreferences;
     Handler handler = new Handler();
     List<Object> statusList = new ArrayList<>();
     boolean doubleBackToExitPressedOnce = false;
+    private boolean isReadPermissionGranted = false;
+    private boolean isWritePermissionGranted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,23 +59,55 @@ public class MainActivity extends AppCompatActivity {
 
         binding.topAppBar.setNavigationOnClickListener(v -> binding.drawerLayout.openDrawer(GravityCompat.START));
 
+        binding.navigationView.setNavigationItemSelectedListener(item -> {
+
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+
+            switch (item.getItemId()) {
+
+                case (R.id.choose_app):
+                    Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                    startActivity(settingsIntent);
+                    break;
+
+                case (R.id.rate_us):
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://play.google.com/store/apps/details?id=com.yatik.statussaver")));
+                    break;
+
+                case (R.id.share_app):
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT,
+                            "Hey!! check out this awesome status saver app at: https://play.google.com/store/apps/details?id=com.yatik.statussaver");
+                    shareIntent.setType("text/plain");
+                    startActivity(Intent.createChooser(shareIntent, "Share app via"));
+                    break;
+
+                case (R.id.privacy_policy):
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://sites.google.com/view/yatikstatussaver/home")));
+                    break;
+            }
+            return false;
+        });
+
         mPermissionResultLauncher =
                 registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result -> {
 
-                    if (result.get(Manifest.permission.READ_EXTERNAL_STORAGE) != null){
+                    if (result.get(Manifest.permission.READ_EXTERNAL_STORAGE) != null) {
                         isReadPermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.READ_EXTERNAL_STORAGE));
                     }
 
-                    if (result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) != null){
+                    if (result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) != null) {
                         isWritePermissionGranted = Boolean.TRUE.equals(result.get(Manifest.permission.WRITE_EXTERNAL_STORAGE));
                     }
 
-                    if (!isReadPermissionGranted && !isWritePermissionGranted){
+                    if (!isReadPermissionGranted && !isWritePermissionGranted) {
                         showNoPermissionAlert();
                     }
 
-                    if (isReadPermissionGranted && isWritePermissionGranted){
-                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+                    if (isReadPermissionGranted && isWritePermissionGranted) {
+                        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
                             replaceFragment(new ImageFragment(statusList));
                         }
                     }
@@ -101,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void requestPermission(){
+    private void requestPermission() {
 
         isReadPermissionGranted = ContextCompat.checkSelfPermission(
                 this, Manifest.permission.READ_EXTERNAL_STORAGE
@@ -113,19 +145,19 @@ public class MainActivity extends AppCompatActivity {
 
         List<String> permissionRequest = new ArrayList<>();
 
-        if (!isReadPermissionGranted){
+        if (!isReadPermissionGranted) {
             permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
-        if (!isWritePermissionGranted){
+        if (!isWritePermissionGranted) {
             permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        if (!permissionRequest.isEmpty()){
+        if (!permissionRequest.isEmpty()) {
             mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
-                replaceFragment(new ImageFragment(statusList));
+        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+            replaceFragment(new ImageFragment(statusList));
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
             sharedPreferences = getSharedPreferences("tree", Context.MODE_PRIVATE);
             String uriString = sharedPreferences.getString("treeUriString", "");
@@ -143,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog dialog = builder.create();
                 dialog.show();
 
-            } else{
+            } else {
 
                 new Thread(() -> {
                     getListAboveQ(wa_status_uri);
@@ -174,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.main_frame_layout, fragment, null)
@@ -183,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void showNoPermissionAlert(){
+    private void showNoPermissionAlert() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle("Permission Denied")
@@ -192,9 +224,9 @@ public class MainActivity extends AppCompatActivity {
                 .setIcon(R.drawable.permission_message)
                 .setPositiveButton(Html.fromHtml("<font color='#89B3F7'>SETTINGS</font>"), (dialog, which) -> {
                     Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    Uri uri = Uri.fromParts("package", MainActivity.this.getPackageName(), null);
                     intent.setData(uri);
-                    startActivity(intent);
+                    MainActivity.this.startActivity(intent);
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -242,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onBackPressed() {
         if (doubleBackToExitPressedOnce) {
@@ -253,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
         this.doubleBackToExitPressedOnce = true;
         Toast.makeText(this, "Press again to exit", Toast.LENGTH_SHORT).show();
 
-        new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce=false, 2000);
+        new Handler(Looper.getMainLooper()).postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
 }

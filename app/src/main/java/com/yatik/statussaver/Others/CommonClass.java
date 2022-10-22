@@ -26,25 +26,15 @@ import java.util.Locale;
 public class CommonClass {
 
     public static final int SPAN_COUNT = 2;
-
     public static final String FOLDER_NAME = "StatusSaver";
-
-    public static final String WA_PACKAGE_NAME = "com.whatsapp";
-
-    public static final File FOLDER_BELOW_Q = new File(Environment.getExternalStorageDirectory()
-            + File.separator + "WhatsApp/Media/.Statuses");
-
-    public static final File FOLDER_ABOVE_Q = new File(Environment.getExternalStorageDirectory()
-            + File.separator + "Android/media/com.whatsapp/WhatsApp/Media/.Statuses");
-
     public static final File SAVED_FOLDER_FILE = new File(Environment.getExternalStorageDirectory()
             + File.separator + "Download/" + FOLDER_NAME);
+    public static Uri wa_status_uri;
+    public static String waPackageName;
+    public static File folderBelowQ;
+    public static File folderAboveQ;
 
-    public static final Uri wa_status_uri = Uri.parse("content://com.android.externalstorage.documents/tree/primary%3AAndroid%2Fmedia/document/primary%3AAndroid%2Fmedia%2Fcom.whatsapp%2FWhatsApp%2FMedia%2F.Statuses");
-
-    public static final Uri SAVED_FOLDER_URI = Uri.parse("content://com.android.externalstorage.documents/tree/primary%3ADownload%2F" + FOLDER_NAME);
-
-    public static void saveFileBelowQ(Context context, String filePath){
+    public static void saveFileBelowQ(Context context, String filePath) {
 
         File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), FOLDER_NAME);
 
@@ -54,7 +44,7 @@ public class CommonClass {
 
         String path = root + File.separator + Uri.parse(filePath).getLastPathSegment();
 
-        if (new File(path).exists()){
+        if (new File(path).exists()) {
             Toast.makeText(context, "File Already Saved!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -70,11 +60,11 @@ public class CommonClass {
             os.close();
 
             MediaScannerConnection.scanFile(context,
-                    new String[] { file.toString() }, null,
+                    new String[]{file.toString()}, null,
                     (pathToFile, uri) -> {
                         Log.i("ExternalStorage", "Scanned " + pathToFile + ":");
                         Log.i("ExternalStorage", "-> uri=" + uri);
-            });
+                    });
 
             Toast.makeText(context, "Saved file successfully.", Toast.LENGTH_SHORT).show();
 
@@ -88,7 +78,7 @@ public class CommonClass {
 
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    public static void saveFileAboveQ(Context context, String filePath){
+    public static void saveFileAboveQ(Context context, String filePath) {
         File file = new File(filePath);
         String fileName;
         String mimeType;
@@ -123,7 +113,7 @@ public class CommonClass {
 
             Toast.makeText(context, "File Saved Successfully", Toast.LENGTH_SHORT).show();
 
-        } catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(context, "Unable To Save This File", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }

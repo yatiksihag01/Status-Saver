@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="switch_preference_wab"
+        android:summary="Turn this on to see WA Business statuses"
+        android:thumbTint="#386A20"
+        android:title="WhatsApp Business"
+        android:trackTint="#7ED67D" />
+</PreferenceScreen>

@@ -39,18 +39,14 @@ import java.util.List;
  */
 public class ImageFragment extends Fragment {
 
+    private final List<Data> imageList = new ArrayList<>();
+    private final List<Object> imageStatusList = new ArrayList<>();
+    private final Handler handler = new Handler();
     View noFilesFound;
+    SwipeRefreshLayout swipeRefreshLayout;
     private ImageAdapter imageAdapter;
     private RecyclerView recyclerView;
-    SwipeRefreshLayout swipeRefreshLayout;
     private List<Object> statusList;
-    private final List<Data> imageList = new ArrayList<>();
-    private final  List<Object> imageStatusList = new ArrayList<>();
-    private final Handler handler = new Handler();
-
-    public ImageFragment(){
-        //Required empty constructor
-    }
 
 
     public ImageFragment(List<Object> statusList) {
@@ -73,7 +69,7 @@ public class ImageFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipe_layout);
         swipeRefreshLayout.setOnRefreshListener(() -> {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                 new Thread(() -> {
                     getListAboveQ(CommonClass.wa_status_uri);
                     handler.post(this::getImageData);
@@ -94,9 +90,9 @@ public class ImageFragment extends Fragment {
 
 
     private void getImageData() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && CommonClass.FOLDER_BELOW_Q.exists()){
-             extractImagesBelowQ();
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && CommonClass.FOLDER_ABOVE_Q.exists()){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q && CommonClass.folderBelowQ.exists()) {
+            extractImagesBelowQ();
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && CommonClass.folderAboveQ.exists()) {
             extractImagesAboveQ();
         } else {
             Toast.makeText(getContext(), "WhatsApp Is Not Installed On Your Device", Toast.LENGTH_LONG).show();
@@ -113,12 +109,12 @@ public class ImageFragment extends Fragment {
         new Thread(() -> {
             // a potentially time consuming task
             //TODO: Sort
-            if (statusList.size() > 0){
-                for (int i = 0; i < statusList.size(); i++){
+            if (statusList.size() > 0) {
+                for (int i = 0; i < statusList.size(); i++) {
                     String docId = DocumentsContract.getDocumentId(Uri.parse(String.valueOf(statusList.get(i))));
                     File file = new File(docId);
                     new Data(file, file.getName(), file.getAbsolutePath());
-                    if (Data.isImage){
+                    if (Data.isImage) {
                         imageStatusList.add(statusList.get(i));
                     }
                 }
@@ -150,15 +146,15 @@ public class ImageFragment extends Fragment {
 
 
     @SuppressLint("NotifyDataSetChanged")
-    private void extractImagesBelowQ(){
+    private void extractImagesBelowQ() {
         new Thread(() -> {
             // a potentially time consuming task
-            File[] allFiles = CommonClass.FOLDER_BELOW_Q.listFiles();
+            File[] allFiles = CommonClass.folderBelowQ.listFiles();
             assert allFiles != null;
             Arrays.sort(allFiles, (o1, o2) -> {
-                if (o1.lastModified() > o2.lastModified()){
+                if (o1.lastModified() > o2.lastModified()) {
                     return -1;
-                } else if (o2.lastModified() > o1.lastModified()){
+                } else if (o2.lastModified() > o1.lastModified()) {
                     return 1;
                 }
                 return 0;
@@ -225,7 +221,7 @@ public class ImageFragment extends Fragment {
     }
 
 
-    public void noFilesView(){
+    public void noFilesView() {
         View noFilesFound = requireView().findViewById(R.id.no_files_found_img);
         noFilesFound.setVisibility(View.VISIBLE);
 
@@ -233,12 +229,13 @@ public class ImageFragment extends Fragment {
         openWA.setOnClickListener(v -> {
 
             Intent launchIntent = null;
-            try{
-                launchIntent = requireActivity().getPackageManager().getLaunchIntentForPackage(CommonClass.WA_PACKAGE_NAME);
-            } catch (Exception ignored) {}
+            try {
+                launchIntent = requireActivity().getPackageManager().getLaunchIntentForPackage(CommonClass.waPackageName);
+            } catch (Exception ignored) {
+            }
 
-            if(launchIntent == null){
-                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://play.google.com/store/apps/details?id=" + CommonClass.WA_PACKAGE_NAME)));
+            if (launchIntent == null) {
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://play.google.com/store/apps/details?id=" + CommonClass.waPackageName)));
             } else {
                 startActivity(launchIntent);
             }

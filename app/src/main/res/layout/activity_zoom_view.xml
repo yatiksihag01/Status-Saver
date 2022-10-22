@@ -8,19 +8,19 @@
     tools:context=".ZoomView">
 
 
-    <ImageView
+    <com.ortiz.touchview.TouchImageView
         android:id="@+id/main_img_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="Full size image view"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars"
-        android:contentDescription="Full size image view"
-        tools:ignore="HardcodedText" />
+        tools:ignore="HardcodedText"
+        tools:srcCompat="@tools:sample/avatars" />
 
     <FrameLayout
         android:id="@+id/videoFrame"
@@ -53,26 +53,26 @@
             android:layout_width="@dimen/zoomViewIconHeightWidth"
             android:layout_height="@dimen/zoomViewIconHeightWidth"
             android:background="@color/FileDetailsButtonBackground"
+            android:contentDescription="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.864"
             app:layout_constraintStart_toEndOf="@+id/edit_button"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/outline_file_download_24"
-            android:contentDescription="@string/save" />
+            app:srcCompat="@drawable/outline_file_download_24" />
 
         <ImageButton
             android:id="@+id/share_button"
             android:layout_width="@dimen/zoomViewIconHeightWidth"
             android:layout_height="@dimen/zoomViewIconHeightWidth"
             android:background="@color/FileDetailsButtonBackground"
+            android:contentDescription="@string/share"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/forward_button"
             app:layout_constraintHorizontal_bias="0.066"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:contentDescription="@string/share"
             app:srcCompat="@drawable/ic_baseline_share_24" />
 
         <ImageButton
@@ -80,6 +80,7 @@
             android:layout_width="@dimen/zoomViewIconHeightWidth"
             android:layout_height="@dimen/zoomViewIconHeightWidth"
             android:background="@color/FileDetailsButtonBackground"
+            android:contentDescription="Upload to google photos"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.333"
@@ -87,7 +88,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_baseline_backup_24"
-            android:contentDescription="Upload to google photos"
             tools:ignore="HardcodedText" />
 
         <ImageButton
@@ -95,13 +95,13 @@
             android:layout_width="@dimen/zoomViewIconHeightWidth"
             android:layout_height="@dimen/zoomViewIconHeightWidth"
             android:background="@color/FileDetailsButtonBackground"
+            android:contentDescription="Forward on WhatsApp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.311"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/forward_icon_24"
-            android:contentDescription="Forward on WhatsApp"
             tools:ignore="HardcodedText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

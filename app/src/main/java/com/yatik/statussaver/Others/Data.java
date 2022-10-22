@@ -6,14 +6,14 @@ import java.io.File;
 
 public class Data {
 
+    public static boolean isImage;
+    public static boolean isVideo;
     private final File file;
     private final Uri fileUri;
     private final String name;
     private String path;
-    public static boolean isImage;
-    public static boolean isVideo;
 
-    public Data(File file, String name, String path){
+    public Data(File file, String name, String path) {
         this.file = file;
         this.name = name;
         this.path = path;
@@ -41,21 +41,5 @@ public class Data {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public boolean isImage() {
-        return isImage;
-    }
-
-    public void setImage(boolean image) {
-        isImage = image;
-    }
-
-    public boolean isVideo() {
-        return isVideo;
-    }
-
-    public void setVideo(boolean video) {
-        isVideo = video;
     }
 }

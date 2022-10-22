@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- res/layout/example_activity.xml -->
+<?xml version="1.0" encoding="utf-8"?><!-- res/layout/example_activity.xml -->
 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/swipe_layout"
-    android:layout_margin="@dimen/refreshLayoutMargin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="@dimen/refreshLayoutMargin"
     tools:context=".MainActivity">
 
     <FrameLayout
         android:id="@+id/image_fragment_container_view"
-        android:tag="image_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:tag="image_frame">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
@@ -20,11 +19,11 @@
             android:layout_height="match_parent" />
 
         <include
+            android:id="@+id/no_files_found_img"
+            layout="@layout/no_files_found"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            android:id="@+id/no_files_found_img"
-            layout="@layout/no_files_found" />
+            android:visibility="gone" />
 
     </FrameLayout>
 

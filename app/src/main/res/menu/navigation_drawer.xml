@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_drawer">
 
     <item
-        android:id="@+id/header_title"
-        android:title="@string/app_name" />
-
-    <item
-        android:id="@+id/choose_app"
-        android:title="@string/ChooseApp">
+        android:id="@+id/choose_app_version"
+        android:title="Select App"
+        tools:ignore="HardcodedText">
         <menu>
             <item
-                android:id="@+id/coming_soon"
-                android:title="Coming Soon"
-                android:checkable="true"
-                tools:ignore="HardcodedText" />
+                android:id="@+id/choose_app"
+                android:icon="@drawable/select_app_24"
+                android:title="@string/ChooseApp"
+                app:showAsAction="always" />
         </menu>
     </item>
+
 
     <item
         android:id="@+id/other"
@@ -25,9 +24,23 @@
 
         <menu>
             <item
-                android:id="@+id/coming_soon2"
-                android:title="Coming Soon"
+                android:id="@+id/rate_us"
                 android:checkable="true"
+                android:icon="@drawable/rate_us"
+                android:title="Rate Us"
+                tools:ignore="HardcodedText" />
+
+            <item
+                android:id="@+id/share_app"
+                android:checkable="true"
+                android:icon="@drawable/ic_baseline_share_24"
+                android:title="Share App ❤"
+                tools:ignore="HardcodedText" />
+            <item
+                android:id="@+id/privacy_policy"
+                android:checkable="true"
+                android:icon="@drawable/security_symbol_24"
+                android:title="Privacy Policy"
                 tools:ignore="HardcodedText" />
         </menu>
 
