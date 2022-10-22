@@ -48,6 +48,9 @@ public class ImageFragment extends Fragment {
     private RecyclerView recyclerView;
     private List<Object> statusList;
 
+    public ImageFragment() {
+        //Required empty constructor
+    }
 
     public ImageFragment(List<Object> statusList) {
         this.statusList = statusList;
