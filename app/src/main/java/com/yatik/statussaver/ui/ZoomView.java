@@ -1,59 +1,59 @@
-package com.yatik.statussaver;
+package com.yatik.statussaver.ui;
+
+import static com.yatik.statussaver.utils.Utilities.getAbsolutePath;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.yatik.statussaver.Others.CommonClass;
+import com.yatik.statussaver.R;
 import com.yatik.statussaver.databinding.ActivityZoomViewBinding;
+import com.yatik.statussaver.repository.DefaultStatusRepository;
+import com.yatik.statussaver.utils.Utilities;
 
 import java.io.File;
-import java.util.Objects;
 
 public class ZoomView extends AppCompatActivity {
 
     ActivityZoomViewBinding binding;
     String filePath;
-    String sentFrom;
-    String match = "downloadsAdapter";
     Uri fileUri;
+    StatusViewModel viewModel;
 
     @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String mimeType;
-
         super.onCreate(savedInstanceState);
+
+        String mimeType;
         binding = ActivityZoomViewBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
         getWindow().setStatusBarColor(getResources().getColor(R.color.black, getTheme()));
         getWindow().setNavigationBarColor(getResources().getColor(R.color.black, getTheme()));
 
+         viewModel = new ViewModelProvider(
+                this, new StatusViewModelFactory(new DefaultStatusRepository(this))
+        ).get(StatusViewModel.class);
+
         FrameLayout videoFrame = findViewById(R.id.videoFrame);
 
         filePath = getIntent().getStringExtra("filePath");
-        sentFrom = getIntent().getStringExtra("sentFrom");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Objects.equals(sentFrom, match)) {
-            fileUri = Uri.parse(filePath);
-
-        } else {
-            fileUri = Uri.fromFile(new File(filePath));
-
-        }
+        fileUri = Uri.parse(filePath);
 
         CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(this);
         circularProgressDrawable.setStrokeWidth(5f);
@@ -84,9 +84,9 @@ public class ZoomView extends AppCompatActivity {
         }
 
         binding.shareButton.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)) {
+            if (filePath.startsWith("file")) {
 
-                File file = new File(filePath);
+                File file = new File(getAbsolutePath(filePath));
                 Uri shareUri = FileProvider.getUriForFile(getApplicationContext(), "com.yatik.statussaver.fileprovider", file);
                 Intent shareIntent = new Intent();
                 shareIntent.setAction(Intent.ACTION_SEND);
@@ -107,12 +107,12 @@ public class ZoomView extends AppCompatActivity {
 
         binding.forwardButton.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setPackage(CommonClass.waPackageName);
+            intent.setPackage(Utilities.waPackageName);
             intent.setType(mimeType);
 
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)) {
-
-                File file = new File(filePath);
+            if (filePath.startsWith("file")) {
+                String absolutePath = getAbsolutePath(filePath);
+                File file = new File(absolutePath);
                 Uri shareUri = FileProvider.getUriForFile(getApplicationContext(), "com.yatik.statussaver.fileprovider", file);
                 intent.putExtra(Intent.EXTRA_STREAM, shareUri);
 
@@ -138,9 +138,9 @@ public class ZoomView extends AppCompatActivity {
                         try {
                             launchIntent.setPackage("com.google.android.apps.photos");
                             launchIntent.setType(mimeType);
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)) {
-
-                                File file = new File(filePath);
+                            if (filePath.startsWith("file")) {
+                                String absolutePath = getAbsolutePath(filePath);
+                                File file = new File(absolutePath);
                                 Uri shareUri = FileProvider.getUriForFile(getApplicationContext(), "com.yatik.statussaver.fileprovider", file);
                                 launchIntent.putExtra(Intent.EXTRA_STREAM, shareUri);
 
@@ -162,10 +162,13 @@ public class ZoomView extends AppCompatActivity {
         });
 
         binding.saveButton.setOnClickListener(v -> {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q || Objects.equals(sentFrom, match)) {
-                CommonClass.saveFileBelowQ(this, filePath);
+
+            viewModel.saveStatus(fileUri, mimeType);
+            if (viewModel.isFileSaved()) {
+                Toast.makeText(this, "File saved successfully", Toast.LENGTH_SHORT).show();
             } else {
-                CommonClass.saveFileAboveQ(this, filePath);
+                Toast.makeText(this, "Unable to save this file", Toast.LENGTH_SHORT).show();
+
             }
         });
 

@@ -1,4 +1,4 @@
-package com.yatik.statussaver.Adapters;
+package com.yatik.statussaver.adapters;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,29 +10,25 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.AsyncListDiffer;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.yatik.statussaver.Others.Data;
 import com.yatik.statussaver.R;
-import com.yatik.statussaver.ZoomView;
+import com.yatik.statussaver.models.Status;
+import com.yatik.statussaver.ui.ZoomView;
 
-import java.util.List;
+import java.util.Objects;
 
-public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.ViewHolder> {
-
-    private final List<Data> filesList;
+public class StatusAdapter extends RecyclerView.Adapter<StatusAdapter.ViewHolder> {
     private Context context;
-
-    public DownloadsAdapter(List<Data> filesData) {
-        this.filesList = filesData;
-    }
 
     @NonNull
     @Override
-    public DownloadsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public StatusAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         context = parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.grid_item_view, parent, false);
         return new ViewHolder(view);
@@ -40,47 +36,55 @@ public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.View
 
     @SuppressLint("CheckResult")
     @Override
-    public void onBindViewHolder(@NonNull DownloadsAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StatusAdapter.ViewHolder holder, int position) {
 
         CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
         circularProgressDrawable.setStrokeWidth(5f);
         circularProgressDrawable.setCenterRadius(30f);
         circularProgressDrawable.start();
-
-        //TODO: add error image here
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.placeholder(circularProgressDrawable);
-        Data singleFileData = filesList.get(position);
 
-        if (singleFileData.getName().endsWith(".mp4")) {
+        Status status = differ.getCurrentList().get(position);
+        if (status.getFileName().endsWith(".mp4")) {
             holder.videoPlayIcon.setVisibility(View.VISIBLE);
         }
         Glide
                 .with(context)
-                .load(singleFileData.getFileUri())
+                .load(status.getContentUri())
                 .centerCrop()
                 .apply(requestOptions)
                 .into(holder.imageView);
 
         holder.imageView.setOnClickListener(v -> {
-            String filePath = singleFileData.getPath();
+            String filePath = status.getContentUri().toString();
             Intent intent = new Intent(context, ZoomView.class);
             intent.putExtra("filePath", filePath);
-            intent.putExtra("sentFrom", "downloadsAdapter");
             context.startActivity(intent);
         });
-
-
         holder.imageView.setOnLongClickListener(v -> {
             Toast.makeText(context, "Coming soon...", Toast.LENGTH_SHORT).show();
             return true;
         });
-
     }
+
+    private final DiffUtil.ItemCallback<Status> differCallbacks = new DiffUtil.ItemCallback<Status>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Status oldItem, @NonNull Status newItem) {
+            return Objects.equals(oldItem.getContentUri(), newItem.getContentUri());
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Status oldItem, @NonNull Status newItem) {
+            return oldItem.equals(newItem);
+        }
+    };
+
+    public AsyncListDiffer<Status> differ = new AsyncListDiffer<>(this, differCallbacks);
 
     @Override
     public int getItemCount() {
-        return filesList.size();
+        return differ.getCurrentList().size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -92,7 +96,8 @@ public class DownloadsAdapter extends RecyclerView.Adapter<DownloadsAdapter.View
 
             imageView = view.findViewById(R.id.fileView);
             videoPlayIcon = view.findViewById(R.id.play_icon);
-
         }
+
     }
+
 }
