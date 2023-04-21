@@ -14,8 +14,8 @@ android {
         applicationId "com.yatik.statussaver"
         minSdk 23
         targetSdk 33
-        versionCode 5
-        versionName "1.5"
+        versionCode 7
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -51,8 +51,8 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation "androidx.fragment:fragment:1.5.5"
-    implementation "androidx.fragment:fragment-ktx:1.5.5"
+    implementation "androidx.fragment:fragment:1.5.7"
+    implementation "androidx.fragment:fragment-ktx:1.5.7"
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.8.0'
     implementation "androidx.navigation:navigation-fragment:2.5.3"

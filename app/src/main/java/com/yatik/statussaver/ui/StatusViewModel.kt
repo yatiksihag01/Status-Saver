@@ -1,12 +1,16 @@
 package com.yatik.statussaver.ui
 
 import android.net.Uri
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yatik.statussaver.models.Status
 import com.yatik.statussaver.repository.StatusRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class StatusViewModel(
@@ -25,8 +29,8 @@ class StatusViewModel(
     val downloadedStatusList
         get() = _downloadedStatuses
 
-    private var _fileSaved = false
-    val isFileSaved get() = _fileSaved
+    private var _fileSaved = MutableLiveData<Boolean>()
+    val isFileSaved: LiveData<Boolean> get() = _fileSaved
 
     fun getImageStatuses(folderUri: Uri) = viewModelScope.launch {
         _imageStatuses = repository.getImageStatuses(folderUri)
@@ -40,8 +44,14 @@ class StatusViewModel(
         _downloadedStatuses = repository.getDownloadedStatuses(savedFolderFile)
     }
 
-    fun saveStatus(fileUri: Uri, mimeType: String) = viewModelScope.launch {
-        _fileSaved = repository.saveStatus(fileUri, mimeType)
+    fun saveStatus(fileUri: Uri, mimeType: String) = viewModelScope.launch(Dispatchers.IO) {
+
+        val result = withContext(Dispatchers.IO) {
+            repository.saveStatus(fileUri, mimeType)
+        }
+        withContext(Dispatchers.Main) {
+            _fileSaved.value = result
+        }
     }
 
 }

@@ -179,9 +179,11 @@ class DefaultStatusRepository(
                 ?.also { resultUri ->
                     contentResolver.openOutputStream(resultUri)?.use { outputStream ->
                         contentResolver.openInputStream(collection)?.use { inputStream ->
-                            val fileData = ByteArray(inputStream.available())
-                            inputStream.read(fileData)
-                            outputStream.write(fileData)
+                            val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                            var bytesRead: Int
+                            while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                                outputStream.write(buffer, 0, bytesRead)
+                            }
                         }
                     }
                 } ?: throw IOException("Unable to read/write data")
@@ -211,10 +213,12 @@ class DefaultStatusRepository(
             val file = File(absolutePath)
 
             FileInputStream(file).use { inputStream ->
-                val fileData = ByteArray(inputStream.available())
-                inputStream.read(fileData)
                 FileOutputStream(path).use { outputStream ->
-                    outputStream.write(fileData)
+                    val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                    var bytesRead: Int
+                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                        outputStream.write(buffer, 0, bytesRead)
+                    }
                 }
             }
             true

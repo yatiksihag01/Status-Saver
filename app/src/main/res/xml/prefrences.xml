@@ -5,6 +5,6 @@
         android:key="switch_preference_wab"
         android:summary="Turn this on to see WA Business statuses"
         android:thumbTint="#386A20"
-        android:title="WhatsApp Business"
+        android:title="Business Statuses"
         android:trackTint="#7ED67D" />
 </PreferenceScreen>

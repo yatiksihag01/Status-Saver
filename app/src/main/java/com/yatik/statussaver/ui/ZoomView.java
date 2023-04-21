@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
@@ -162,14 +163,17 @@ public class ZoomView extends AppCompatActivity {
         });
 
         binding.saveButton.setOnClickListener(v -> {
+            Toast.makeText(this, "Saving file...", Toast.LENGTH_SHORT).show();
+            Observer<Boolean> observer = isFileSaved -> {
+                if (isFileSaved) {
+                    Toast.makeText(this, "File saved successfully", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Unable to save this file", Toast.LENGTH_SHORT).show();
 
+                }
+            };
             viewModel.saveStatus(fileUri, mimeType);
-            if (viewModel.isFileSaved()) {
-                Toast.makeText(this, "File saved successfully", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Unable to save this file", Toast.LENGTH_SHORT).show();
-
-            }
+            viewModel.isFileSaved().observe(this, observer);
         });
 
     }

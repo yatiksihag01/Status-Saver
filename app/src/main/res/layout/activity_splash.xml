@@ -9,12 +9,13 @@
 
     <ImageView
         android:id="@+id/splash_logo"
-        android:layout_width="108dp"
-        android:layout_height="108dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
         android:src="@drawable/icon"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline2"
+        app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.351"
         tools:ignore="contentDescription" />
@@ -47,5 +48,19 @@
         app:layout_constraintTop_toBottomOf="@+id/splash_logo"
         app:layout_constraintVertical_bias="0.875"
         app:trackColor="@color/white" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.33" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.66" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

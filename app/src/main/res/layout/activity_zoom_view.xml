@@ -7,16 +7,14 @@
     android:background="@color/FileDetailsButtonBackground"
     tools:context=".ui.ZoomView">
 
-
     <com.ortiz.touchview.TouchImageView
         android:id="@+id/main_img_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:contentDescription="Full size image view"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="HardcodedText"
@@ -24,8 +22,8 @@
 
     <FrameLayout
         android:id="@+id/videoFrame"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -34,6 +32,7 @@
 
         <VideoView
             android:id="@+id/videoView"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
@@ -56,10 +55,10 @@
             android:contentDescription="@string/save"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.864"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/edit_button"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.5"
             app:srcCompat="@drawable/outline_file_download_24" />
 
         <ImageButton
@@ -70,9 +69,10 @@
             android:contentDescription="@string/share"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/forward_button"
-            app:layout_constraintHorizontal_bias="0.066"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
             app:srcCompat="@drawable/ic_baseline_share_24" />
 
         <ImageButton
@@ -82,11 +82,11 @@
             android:background="@color/FileDetailsButtonBackground"
             android:contentDescription="Upload to google photos"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintEnd_toStartOf="@+id/save_button"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/forward_button"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintVertical_bias="0.5"
             app:srcCompat="@drawable/ic_baseline_backup_24"
             tools:ignore="HardcodedText" />
 
@@ -97,10 +97,11 @@
             android:background="@color/FileDetailsButtonBackground"
             android:contentDescription="Forward on WhatsApp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.311"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/edit_button"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/share_button"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
             app:srcCompat="@drawable/forward_icon_24"
             tools:ignore="HardcodedText" />
 
