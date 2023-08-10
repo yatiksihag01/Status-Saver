@@ -139,49 +139,27 @@ public class SplashActivity extends AppCompatActivity {
 
     private void requestPermission() {
 
-        isReadPermissionGranted = ContextCompat.checkSelfPermission(
-                this, Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
 
-        isWritePermissionGranted = ContextCompat.checkSelfPermission(
-                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED;
+            isReadPermissionGranted = ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED;
 
-        List<String> permissionRequest = new ArrayList<>();
+            isWritePermissionGranted = ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED;
 
-        if (!isReadPermissionGranted) {
-            permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
-        }
-        if (!isWritePermissionGranted) {
-            permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        }
+            List<String> permissionRequest = new ArrayList<>();
 
-        if (!permissionRequest.isEmpty()) {
-            mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
+            if (!isReadPermissionGranted) {
+                permissionRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE);
+            }
+            if (!isWritePermissionGranted) {
+                permissionRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+            }
 
-        } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
-            handler.postDelayed(() -> {
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
-            }, 1500);
-
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            mSharedPreferences = getSharedPreferences("tree", Context.MODE_PRIVATE);
-            String uriString = mSharedPreferences.getString("treeUriString", "");
-
-            if (uriString.matches("")) {
-                //ask for folder permission
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                builder.setTitle("Folder Access Required")
-                        .setMessage(R.string.folderAccessMessage)
-                        .setCancelable(false)
-                        .setIcon(R.drawable.permission_message)
-                        .setPositiveButton(Html.fromHtml("<font color='#89B3F7'>GRANT PERMISSION</font>"), (dialog, which) -> aboveQPermission());
-                AlertDialog dialog = builder.create();
-                dialog.show();
+            if (!permissionRequest.isEmpty()) {
+                mPermissionResultLauncher.launch(permissionRequest.toArray(new String[0]));
 
             } else {
                 handler.postDelayed(() -> {
@@ -189,6 +167,30 @@ public class SplashActivity extends AppCompatActivity {
                     finish();
                 }, 1500);
             }
+            return;
+        }
+
+        mSharedPreferences = getSharedPreferences("tree", Context.MODE_PRIVATE);
+        String uriString = mSharedPreferences.getString("treeUriString", "");
+
+        if (uriString.matches("")) {
+            //ask for folder permission
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setTitle("Folder Access Required")
+                    .setMessage(R.string.folderAccessMessage)
+                    .setCancelable(false)
+                    .setIcon(R.drawable.permission_message)
+                    .setPositiveButton(Html.fromHtml("<font color='#89B3F7'>GRANT PERMISSION</font>"), (dialog, which) -> aboveQPermission());
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+        } else {
+            handler.postDelayed(() -> {
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                finish();
+            }, 1500);
         }
     }
 
